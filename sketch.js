@@ -1,13 +1,13 @@
 var ship;
-var flowers = [];
-var drops = [];
+var invaders = [];
+var bullets = [];
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(640, 480);
   ship = new Ship();
-  // drop = new Drop(width/2, height/2);
-  for (var i = 0; i < 6; i++) {
-    flowers[i] = new Flower(i*80+80, 60);
+  // Bullet = new Bullet(width/2, height/2);
+  for (var i = 0; i <11; i++) {
+    invaders[i] = new Invader(i*50+50, 60);
   }
 }
 
@@ -16,53 +16,64 @@ function draw() {
   ship.show();
   ship.move();
 
-  for (var i = 0; i < drops.length; i++) {
-    drops[i].show();
-    drops[i].move();
-    for (var j = 0; j < flowers.length; j++) {
-      if (drops[i].hits(flowers[j])) {
-        flowers[j].grow();
-        drops[i].evaporate();
+  //display and move bullets
+  for (var i = 0; i < bullets.length; i++) {
+    bullets[i].show();
+    bullets[i].move();
+    for (var j = 0; j < invaders.length; j++) {
+      if (bullets[i].hits(invaders[j])) {
+        invaders[j].destroy();
+        bullets[i].evaporate();
       }
     }
   }
 
   var edge = false;
 
-  for (var i = 0; i < flowers.length; i++) {
-    flowers[i].show();
-    flowers[i].move();
-    if (flowers[i].x > width || flowers[i].x < 0) {
+  //display and move invaders
+  for (var i = 0; i < invaders.length; i++) {
+    invaders[i].show();
+    invaders[i].move();
+    if (invaders[i].x + invaders[i].w > width || invaders[i].x < 0) {
       edge = true;
     }
   }
 
+  //When Invaders reach edge of screen, go down
   if (edge) {
-    for (var i = 0; i < flowers.length; i++) {
-      flowers[i].shiftDown();
+    for (var i = 0; i < invaders.length; i++) {
+      invaders[i].shiftDown();
     }
   }
 
-  for (var i = drops.length-1; i >= 0; i--) {
-    if (drops[i].toDelete) {
-      drops.splice(i, 1);
+  //Delete bullet that is hit
+  for (var i = bullets.length-1; i >= 0; i--) {
+    if (bullets[i].toDelete) {
+      bullets.splice(i, 1);
+    }
+  }
+  
+  //Delete Invader that is hit
+  for (var i = invaders.length-1; i >= 0; i--) {
+    if (invaders[i].toDelete) {
+      invaders.splice(i, 1);
     }
   }
 
 
 }
 
+//INPUT
 function keyReleased() {
   if (key != ' ') {
     ship.setDir(0);
   }
 }
 
-
 function keyPressed() {
   if (key === ' ') {
-    var drop = new Drop(ship.x, height - 50);
-    drops.push(drop);
+    var bullet = new Bullet(ship.x, height - 50);
+    bullets.push(bullet);
   }
 
   if (keyCode === RIGHT_ARROW) {

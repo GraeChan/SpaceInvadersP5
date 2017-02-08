@@ -1,20 +1,26 @@
 
-function Flower(x, y) {
+function Invader(x, y) {
   this.x = x;
   this.y = y;
-  this.w = 20;
-  this.h = 20;
+  this.w = 25;
+  this.h = 25;
   this.r = 30;
+  this.toDelete = false;
 
   this.xdir = 1;
 
   this.grow = function() {
-    this.r = this.r + 2;
+    this.h = this.h + 2;
+  }
+  
+  this.destroy = function()
+  {
+	  this.toDelete = true;
   }
 
   this.shiftDown = function() {
     this.xdir *= -1;
-    this.y += this.r;
+    this.y += this.h;
   }
 
   this.move = function() {

@@ -1,15 +1,20 @@
 var ship;
 var invaders = [];
 var bullets = [];
+var fps = 60;
 
 function setup() {
   createCanvas(640, 480);
   ship = new Ship();
   // Bullet = new Bullet(width/2, height/2);
+  var index = 0;
   for (var i = 0; i <11; i++) {
-    invaders[i] = new Invader(i*50+50, 60);
+	for (var j = 0; j <5; j++) {
+		invaders[index++] = new Invader(i*50+50, j*50+50);
+	}
   }
-}
+  frameRate(fps);
+}  
 
 function draw() {
   background(0,0,0);
@@ -23,6 +28,7 @@ function draw() {
     for (var j = 0; j < invaders.length; j++) {
       if (bullets[i].hits(invaders[j])) {
         invaders[j].destroy();
+		fps+=1;
         bullets[i].evaporate();
       }
     }
@@ -32,11 +38,13 @@ function draw() {
 
   //display and move invaders
   for (var i = 0; i < invaders.length; i++) {
+	  for (var i = 0; i < invaders.length; i++) {
     invaders[i].show();
     invaders[i].move();
     if (invaders[i].x + invaders[i].w > width || invaders[i].x < 0) {
       edge = true;
     }
+  }
   }
 
   //When Invaders reach edge of screen, go down

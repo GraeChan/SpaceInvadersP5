@@ -13,10 +13,13 @@ function Ship() {
   this.show = function() {
 	push();
     noStroke();
-    fill(0,255,0);
+    
     rectMode(CENTER);
+	fill(255,255,0);
     rect(this.x, this.y, 10, 25);
+	fill(0,0,255);
     rect(this.x, height-40, 20, 20);
+	fill(255,0,0);
     rect(this.x, height-30, this.w, 20, 5);
 	pop();
   }

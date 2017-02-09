@@ -1,4 +1,6 @@
 
+
+
 function Invader(x, y) {
   this.x = x;
   this.y = y;
@@ -29,7 +31,7 @@ function Invader(x, y) {
   this.show = function() {
 	push();
     noStroke();
-    fill(255, 255, 255);
+    fill(r, g, b);
 	rect(this.x, this.y, this.w, this.h);
 	pop();
   }

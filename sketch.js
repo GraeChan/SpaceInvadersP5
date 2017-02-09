@@ -8,11 +8,12 @@ var bullets = [];
 var scl =  10;
 var totalLives = 3;
 var totalScore = 0;
+var r, g, b;
+var bulletR, bulletG, bulletB;
 
 function setup() {
   createCanvas(640, 480);
   ship = new Ship();
-  frameRate(0);
   // Bullet = new Bullet(width/2, height/2);
   var index = 0;
   for (var i = 0; i <11; i++) {
@@ -20,10 +21,15 @@ function setup() {
 		invaders[index++] = new Invader(i*50+50, j*50+50);
 	}
   }
-  
+  r = random(255);
+	g = random(255);
+	b = random(255);
 }  
 
 function draw() {
+  bulletR = random(255);
+  bulletG = random(255);
+  bulletB = random(255);
   background(0,0,0);
 
   score();
@@ -54,8 +60,11 @@ function draw() {
 	  }
   }
   
+  if (ship.score == 550)
+	{
+		setup();
+	}
 
-  
 
   var edge = false;
 
@@ -68,13 +77,14 @@ function draw() {
       edge = true;
 
     }
-    if (invaders[i].hits(ship) /* ship.y-45 && invaders[i].x < ship.x */) 
+    if (invaders[i].hits(ship) || invaders[i].y > height - scl*4) 
 	{
         ship.destroy();
 		totalLives-=1; 
 		setup();
 		invaders.xdir = 0;
     }
+	
 	
   
   }
@@ -141,14 +151,16 @@ function lives()
 	{
 		for(var i = 0; i < 3; i++)
 		{
-      push();
-			fill(0,255,0);
-      rectMode(CENTER);
-      rect(x, 12.5, 10/2, 25/2);
-      rect(x, 15, 20/2, 20/2);
-      rect(x, 20, 60/2, 20/2, 5/2);
-			x+=scl*5;
-      pop();
+		  push();
+		  rectMode(CENTER);
+		  fill(255,255,0);
+		  rect(x, 12.5, 10/2, 25/2);
+		  fill(0,0,255);
+		  rect(x, 15, 20/2, 20/2);
+		  fill(255,0,0);
+		  rect(x, 20, 60/2, 20/2, 5/2);
+		  x+=scl*5;
+		  pop();
 		}
 	}
 	if(totalLives == 2)
@@ -156,13 +168,15 @@ function lives()
 		for(var i = 0; i < 2; i++)
 		{
 			push();
-			fill(0,255,0);
-      rectMode(CENTER);
-      rect(x, 12.5, 10/2, 25/2);
-      rect(x, 15, 20/2, 20/2);
-      rect(x, 20, 60/2, 20/2, 5/2);
-			x+=scl*5;
-      pop();
+		  rectMode(CENTER);
+		  fill(255,255,0);
+		  rect(x, 12.5, 10/2, 25/2);
+		  fill(0,0,255);
+		  rect(x, 15, 20/2, 20/2);
+		  fill(255,0,0);
+		  rect(x, 20, 60/2, 20/2, 5/2);
+		  x+=scl*5;
+		  pop();
 		}
 	}
 	 if(totalLives == 1)
@@ -170,13 +184,15 @@ function lives()
 		for(var i = 0; i < 1; i++)
 		{
 			push();
-			fill(0,255,0);
-      rectMode(CENTER);
-      rect(x, 12.5, 10/2, 25/2);
-      rect(x, 15, 20/2, 20/2);
-      rect(x, 20, 60/2, 20/2, 5/2);
-			x+=scl*5;
-      pop();
+		  rectMode(CENTER);
+		  fill(255,255,0);
+		  rect(x, 12.5, 10/2, 25/2);
+		  fill(0,0,255);
+		  rect(x, 15, 20/2, 20/2);
+		  fill(255,0,0);
+		  rect(x, 20, 60/2, 20/2, 5/2);
+		  x+=scl*5;
+		  pop();
 		}
 	}
 	 if(totalLives <= 0)
@@ -185,19 +201,20 @@ function lives()
 		for(var i = 0; i < 0; i++)
 		{
 			push();
-			fill(0,255,0);
-      rectMode(CENTER);
-      rect(x, 12.5, 10/2, 25/2);
-      rect(x, 15, 20/2, 20/2);
-      rect(x, 20, 60/2, 20/2, 5/2);
-			x+=scl*5;
-      pop();
+		  rectMode(CENTER);
+		  fill(255,255,0);
+		  rect(x, 12.5, 10/2, 25/2);
+		  fill(0,0,255);
+		  rect(x, 15, 20/2, 20/2);
+		  fill(255,0,0);
+		  rect(x, 20, 60/2, 20/2, 5/2);
+		  x+=scl*5;
+		  pop();
 		}
 		ship.alive = false;
 		totalLives = 0;
 		gameOver();
-		frameRate(0);
-		invaders.toDelete();
+		invaders.destroy();
 	}
 	
 	pop();
@@ -215,7 +232,6 @@ function keyPressed() {
   if (key === ' ') {
     var bullet = new Bullet(ship.x, height - 50);
     bullets.push(bullet);
-	frameRate(0);
   }
 
   if (keyCode === RIGHT_ARROW) {

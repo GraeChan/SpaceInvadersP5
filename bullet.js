@@ -8,7 +8,7 @@ function Bullet(x, y) {
 
   this.show = function() {
     noStroke();
-    fill(255, 255, 255);
+    fill(bulletR, bulletG, bulletB);
     //ellipse(this.x, this.y, this.r*2, this.r*2);
 	rect(this.x-this.w/2, this.y-this.h, this.w, this.h);
   }

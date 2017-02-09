@@ -1,7 +1,6 @@
 var ship;
 var invaders = [];
 var bullets = [];
-var fps = 30;
 var scl =  10;
 
 function setup() {
@@ -14,6 +13,7 @@ function setup() {
 		invaders[index++] = new Invader(i*50+50, j*50+50);
 	}
   }
+  frameRate(60);
 }  
 
 function draw() {
@@ -48,17 +48,19 @@ function draw() {
 
   //display and move invaders
   for (var i = 0; i < invaders.length; i++) {
-	  for (var i = 0; i < invaders.length; i++) {
+	  
     invaders[i].show();
     invaders[i].move();
     if (invaders[i].x + invaders[i].w > width || invaders[i].x < 0) {
       edge = true;
+
     }
-    if (invaders[i].hits(ship)) {
+    if (invaders[i].hits(ship) /* ship.y-45 && invaders[i].x < ship.x */) 
+	{
         ship.destroy();
-        //bullets[i].evaporate();
-      }
-  }
+    }
+	
+  
   }
 
   //When Invaders reach edge of screen, go down
@@ -83,8 +85,8 @@ function draw() {
       ship.totalScore += 10;
     }
   }
-
-
+  
+	ship.boundaries();
 }
 
 function score()
@@ -182,12 +184,22 @@ function keyPressed() {
   if (key === ' ') {
     var bullet = new Bullet(ship.x, height - 50);
     bullets.push(bullet);
-    ship.lives-=1;
   }
 
   if (keyCode === RIGHT_ARROW) {
-    ship.setDir(1);
-  } else if (keyCode === LEFT_ARROW) {
+	  if(ship.x < width - ship.w)
+	  {
+		  ship.setDir(1);
+		  
+		  
+	  }
+	  if(ship.x > width - ship.w)
+	  {
+		  ship.setDir(0);
+	  }
+  }  
+  else if (keyCode === LEFT_ARROW) 
+  {
     ship.setDir(-1);
   }
 }

@@ -19,12 +19,13 @@ function setup() {
 function draw() {
   background(0,0,0);
 
+  score();
+
+  //Ground
   push();
   noStroke();
   fill(0,255,0);
- 
   rect(0,height-scl,width,scl);
-  
   pop();
 
   ship.show();
@@ -73,10 +74,21 @@ function draw() {
   for (var i = invaders.length-1; i >= 0; i--) {
     if (invaders[i].toDelete) {
       invaders.splice(i, 1);
+      ship.score += 10;
+      ship.totalScore += 10;
     }
   }
 
 
+}
+
+function score()
+{
+	push();
+	fill(255, 255, 255);
+	textSize(16);
+	text("SCORE: " + ship.totalScore, scl, scl*1.75);
+	pop();
 }
 
 //INPUT

@@ -1,6 +1,8 @@
 function Ship() {
   this.x = width/2;
   this.xdir = 0;
+  this.score = 0;
+  this.totalScore = 0; 
 
   this.show = function() {
 	push();

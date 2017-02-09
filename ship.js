@@ -7,6 +7,7 @@ function Ship() {
   this.score = 0;
   this.totalScore = 0; 
   this.lives = 3;
+  this.alive = true;
   this.toDelete = false;
 
   this.show = function() {
@@ -31,9 +32,8 @@ function Ship() {
   this.destroy = function()
   {
 	  this.toDelete = true;
-	  this.lives -= 1;
-	  this.toDelete = false;
   }
+  
   this.boundaries = function()
   {
 	  if(this.x > width - this.w/2 || this.x < this.w/2)

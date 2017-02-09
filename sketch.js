@@ -1,11 +1,18 @@
+//Space Invaders Clone made with P5.js
+//Graeme A. Burr
+//February 2017
+
 var ship;
 var invaders = [];
 var bullets = [];
 var scl =  10;
+var totalLives = 3;
+var totalScore = 0;
 
 function setup() {
   createCanvas(640, 480);
   ship = new Ship();
+  frameRate(0);
   // Bullet = new Bullet(width/2, height/2);
   var index = 0;
   for (var i = 0; i <11; i++) {
@@ -13,7 +20,7 @@ function setup() {
 		invaders[index++] = new Invader(i*50+50, j*50+50);
 	}
   }
-  frameRate(60);
+  
 }  
 
 function draw() {
@@ -29,20 +36,26 @@ function draw() {
   rect(0,height-scl,width,scl);
   pop();
 
-  ship.show();
-  ship.move();
-
-  //display and move bullets
-  for (var i = 0; i < bullets.length; i++) {
-    bullets[i].show();
-    bullets[i].move();
-    for (var j = 0; j < invaders.length; j++) {
-      if (bullets[i].hits(invaders[j])) {
-        invaders[j].destroy();
-        bullets[i].evaporate();
-      }
-    }
+  if(ship.alive)
+  {
+		ship.show();
+		ship.move();
+  
+	  //display and move bullets
+	  for (var i = 0; i < bullets.length; i++) {
+		bullets[i].show();
+		bullets[i].move();
+		for (var j = 0; j < invaders.length; j++) {
+		  if (bullets[i].hits(invaders[j])) {
+			invaders[j].destroy();
+			bullets[i].evaporate();
+		  }
+		}
+	  }
   }
+  
+
+  
 
   var edge = false;
 
@@ -58,6 +71,9 @@ function draw() {
     if (invaders[i].hits(ship) /* ship.y-45 && invaders[i].x < ship.x */) 
 	{
         ship.destroy();
+		totalLives-=1; 
+		setup();
+		invaders.xdir = 0;
     }
 	
   
@@ -82,11 +98,13 @@ function draw() {
     if (invaders[i].toDelete) {
       invaders.splice(i, 1);
       ship.score += 10;
-      ship.totalScore += 10;
+      totalScore += 10;
     }
   }
-  
+	
+	//Prevents player moving off screen
 	ship.boundaries();
+	
 }
 
 function score()
@@ -94,7 +112,16 @@ function score()
 	push();
 	fill(255, 255, 255);
 	textSize(16);
-	text("SCORE: " + ship.totalScore, scl*2.5, scl*2.5);
+	text("SCORE: " + totalScore, scl*2.5, scl*2.5);
+	pop();
+}
+
+function gameOver()
+{
+	push();
+	fill(255, 0, 0);
+	textSize(64);
+	text("GAME OVER", 125, 260);
 	pop();
 }
 
@@ -103,14 +130,14 @@ function lives()
   push();
   fill(255, 255, 255);
 	textSize(16);
-	text("LIVES: " + ship.lives, width/2, scl*2.5);
+	text("LIVES: " + totalLives, width/2, scl*2.5);
   pop();
 
 	push();
 	noStroke();
 	fill(0, 255, 0);
   var x = width / 2 + 100
-	if(ship.lives==3)
+	if(totalLives == 3)
 	{
 		for(var i = 0; i < 3; i++)
 		{
@@ -124,7 +151,7 @@ function lives()
       pop();
 		}
 	}
-	if(ship.lives==2)
+	if(totalLives == 2)
 	{
 		for(var i = 0; i < 2; i++)
 		{
@@ -138,7 +165,7 @@ function lives()
       pop();
 		}
 	}
-	 if(ship.lives==1)
+	 if(totalLives == 1)
 { 
 		for(var i = 0; i < 1; i++)
 		{
@@ -152,7 +179,7 @@ function lives()
       pop();
 		}
 	}
-	 if(ship.lives==0)
+	 if(totalLives <= 0)
 	{
 		var x = scl*8 + scl/2
 		for(var i = 0; i < 0; i++)
@@ -167,6 +194,10 @@ function lives()
       pop();
 		}
 		ship.alive = false;
+		totalLives = 0;
+		gameOver();
+		frameRate(0);
+		invaders.toDelete();
 	}
 	
 	pop();
@@ -184,19 +215,11 @@ function keyPressed() {
   if (key === ' ') {
     var bullet = new Bullet(ship.x, height - 50);
     bullets.push(bullet);
+	frameRate(0);
   }
 
   if (keyCode === RIGHT_ARROW) {
-	  if(ship.x < width - ship.w)
-	  {
-		  ship.setDir(1);
-		  
-		  
-	  }
-	  if(ship.x > width - ship.w)
-	  {
-		  ship.setDir(0);
-	  }
+	  ship.setDir(1);
   }  
   else if (keyCode === LEFT_ARROW) 
   {

@@ -3,6 +3,8 @@ function Ship() {
   this.xdir = 0;
   this.score = 0;
   this.totalScore = 0; 
+  this.lives = 3;
+  this.toDelete = false;
 
   this.show = function() {
 	push();
@@ -21,6 +23,12 @@ function Ship() {
 
   this.move = function(dir) {
     this.x += this.xdir*5;
+  }
+
+  this.destroy = function()
+  {
+    this.lives -=1;
+	  this.toDelete = true;
   }
 
 }

@@ -20,6 +20,7 @@ function draw() {
   background(0,0,0);
 
   score();
+  lives();
 
   //Ground
   push();
@@ -53,6 +54,10 @@ function draw() {
     if (invaders[i].x + invaders[i].w > width || invaders[i].x < 0) {
       edge = true;
     }
+    if (invaders[i].hits(ship)) {
+        ship.destroy();
+        //bullets[i].evaporate();
+      }
   }
   }
 
@@ -87,9 +92,84 @@ function score()
 	push();
 	fill(255, 255, 255);
 	textSize(16);
-	text("SCORE: " + ship.totalScore, scl, scl*1.75);
+	text("SCORE: " + ship.totalScore, scl*2.5, scl*2.5);
 	pop();
 }
+
+function lives()
+{
+  push();
+  fill(255, 255, 255);
+	textSize(16);
+	text("LIVES: " + ship.lives, width/2, scl*2.5);
+  pop();
+
+	push();
+	noStroke();
+	fill(0, 255, 0);
+  var x = width / 2 + 100
+	if(ship.lives==3)
+	{
+		for(var i = 0; i < 3; i++)
+		{
+      push();
+			fill(0,255,0);
+      rectMode(CENTER);
+      rect(x, 12.5, 10/2, 25/2);
+      rect(x, 15, 20/2, 20/2);
+      rect(x, 20, 60/2, 20/2, 5/2);
+			x+=scl*5;
+      pop();
+		}
+	}
+	if(ship.lives==2)
+	{
+		for(var i = 0; i < 2; i++)
+		{
+			push();
+			fill(0,255,0);
+      rectMode(CENTER);
+      rect(x, 12.5, 10/2, 25/2);
+      rect(x, 15, 20/2, 20/2);
+      rect(x, 20, 60/2, 20/2, 5/2);
+			x+=scl*5;
+      pop();
+		}
+	}
+	 if(ship.lives==1)
+{ 
+		for(var i = 0; i < 1; i++)
+		{
+			push();
+			fill(0,255,0);
+      rectMode(CENTER);
+      rect(x, 12.5, 10/2, 25/2);
+      rect(x, 15, 20/2, 20/2);
+      rect(x, 20, 60/2, 20/2, 5/2);
+			x+=scl*5;
+      pop();
+		}
+	}
+	 if(ship.lives==0)
+	{
+		var x = scl*8 + scl/2
+		for(var i = 0; i < 0; i++)
+		{
+			push();
+			fill(0,255,0);
+      rectMode(CENTER);
+      rect(x, 12.5, 10/2, 25/2);
+      rect(x, 15, 20/2, 20/2);
+      rect(x, 20, 60/2, 20/2, 5/2);
+			x+=scl*5;
+      pop();
+		}
+		ship.alive = false;
+	}
+	
+	pop();
+}
+
 
 //INPUT
 function keyReleased() {
@@ -102,6 +182,7 @@ function keyPressed() {
   if (key === ' ') {
     var bullet = new Bullet(ship.x, height - 50);
     bullets.push(bullet);
+    ship.lives-=1;
   }
 
   if (keyCode === RIGHT_ARROW) {

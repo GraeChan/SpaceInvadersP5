@@ -34,4 +34,13 @@ function Invader(x, y) {
 	pop();
   }
 
+  this.hits = function(ship) {
+    var d = dist(this.x, this.y, ship.x, ship.y);
+    if (d < this.h + ship.h && d < ship.w  ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

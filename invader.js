@@ -4,7 +4,6 @@ function Invader(x, y) {
   this.y = y;
   this.w = 25;
   this.h = 25;
-  this.r = 30;
   this.toDelete = false;
 
   this.xdir = 1;
@@ -31,7 +30,6 @@ function Invader(x, y) {
 	push();
     noStroke();
     fill(255, 255, 255);
-    //ellipse(this.x, this.y, this.r*2, this.r*2);
 	rect(this.x, this.y, this.w, this.h);
 	pop();
   }

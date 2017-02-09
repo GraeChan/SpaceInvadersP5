@@ -1,7 +1,8 @@
 var ship;
 var invaders = [];
 var bullets = [];
-var fps = 60;
+var fps = 30;
+var scl =  10;
 
 function setup() {
   createCanvas(640, 480);
@@ -13,11 +14,19 @@ function setup() {
 		invaders[index++] = new Invader(i*50+50, j*50+50);
 	}
   }
-  frameRate(fps);
 }  
 
 function draw() {
   background(0,0,0);
+
+  push();
+  noStroke();
+  fill(0,255,0);
+ 
+  rect(0,height-scl,width,scl);
+  
+  pop();
+
   ship.show();
   ship.move();
 
@@ -28,7 +37,6 @@ function draw() {
     for (var j = 0; j < invaders.length; j++) {
       if (bullets[i].hits(invaders[j])) {
         invaders[j].destroy();
-		fps+=1;
         bullets[i].evaporate();
       }
     }
